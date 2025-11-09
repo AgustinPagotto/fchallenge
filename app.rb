@@ -1,22 +1,14 @@
-require "json"
+app_files = File.expand_path('../app/**/*.rb', __FILE__)
+Dir.glob(app_files).each {|file| require(file)}
+require_relative 'config/router'
 
 class App
   def call(env)
-    req = Rack::Request.new(env)
+    request = Rack::Request.new(env)
+    serve_request(request)
+  end
 
-    case [req.request_method, req.path_info]
-    when ["GET", "/"]
-      [
-        200,
-        { "Content-Type" => "application/json" },
-        [ { message: "Hello from Fudo Challenge!" }.to_json ]
-      ]
-    else
-      [
-        404,
-        { "Content-Type" => "application/json" },
-        [ { error: "Not Found" }.to_json ]
-      ]
-    end
+  def serve_request(request)
+    Router.new(request).route!
   end
 end
