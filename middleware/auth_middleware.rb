@@ -1,3 +1,4 @@
+require_relative '../app/controllers/auth_controller'
 class AuthChecker
   def initialize(app)
     @app = app 
@@ -27,7 +28,7 @@ class AuthChecker
 
     # Style of header: "Bearer secret-token"
     token = auth_header.split(" ").last
-    token == ENV.fetch("AUTH_TOKEN", "secret-token")
+    AuthController.valid_token?(token)
   end
     
 end

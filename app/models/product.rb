@@ -31,7 +31,8 @@ class Product
     @@products.find { |p| p.id == id.to_i }
   end
 
-  def self.create(name:)
+  def self.create(name)
+    puts name
     product = Product.new(name: name)
     product.save
     product

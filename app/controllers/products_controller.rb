@@ -19,7 +19,9 @@ class ProductsController < BaseController
 
   # POST /products
   def create
-    product = Product.create(params[:name])
+    body = request.body.read
+    data = JSON.parse(body)
+    product = Product.create(data["name"])
     build_response(product.to_h, 201)
   end
 
