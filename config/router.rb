@@ -20,7 +20,7 @@ class Router
 
   private
 
-  def add_route_info_to_request_params
+  def add_route_info_to_request_params!
     @request.params.merge!(route_info)
   end
 

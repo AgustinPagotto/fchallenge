@@ -1,3 +1,5 @@
+require 'json'
+
 class BaseController
   attr_reader :request
   def initialize(request)
@@ -6,8 +8,11 @@ class BaseController
 
   private
 
-  def build_response(body, status: 200)
-    [status, {"Content-Type" => "text/html"}, [body]]
+  def build_response(data, status: 200)
+    [status, 
+     {"Content-Type" => "text/json"},
+     [JSON.generate(data)]
+    ]
   end
 
   def redirect_to(uri)
