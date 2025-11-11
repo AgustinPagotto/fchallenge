@@ -1,7 +1,34 @@
-require_relative './base_controller.rb'
+require_relative './base_controller'
+require 'securerandom'
 
 class AuthController < BaseController
-  def index 
-    build_response("this should be a login")
+  @@tokens = []
+
+  def index
+    puts params
+  end
+
+  def create
+    body = request.body.read
+    data = JSON.parse(body)
+    username = data["username"]
+    password = data["password"]
+    puts data
+    
+    if ENV["USERNAME"] == username && ENV["PASSWORD"] == password
+      token = SecureRandom.hex(32)
+      @@tokens << token
+      build_response({ token: token })
+    else
+      build_response({ error: "Invalid credentials" }, 401)
+    end
+  end
+
+  def self.valid_token?(token)
+    @@tokens.include?(token)
+  end
+
+  def self.clear_tokens!
+    @@tokens = []
   end
 end

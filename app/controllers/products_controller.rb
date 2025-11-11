@@ -21,7 +21,6 @@ class ProductsController < BaseController
   def create
     product = Product.create(params[:name])
     build_response(product.to_h, 201)
-    
   end
 
   # GET /product/new

@@ -6,7 +6,7 @@ class AuthChecker
   def call(env)
     path = env["PATH_INFO"]
     if path == "/auth" || path == "/openapi.yaml" || path == "/AUTHORS"
-      @app.call(env)
+      return @app.call(env)
     end
     auth_header = env["HTTP_AUTHORIZATION"]
     if valid_token?(auth_header)

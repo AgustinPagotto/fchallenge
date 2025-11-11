@@ -8,7 +8,7 @@ class BaseController
 
   private
 
-  def build_response(data, status: 200)
+  def build_response(data, status = 200)
     [status, 
      {"Content-Type" => "text/json"},
      [JSON.generate(data)]

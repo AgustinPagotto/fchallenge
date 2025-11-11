@@ -24,27 +24,26 @@ class Router
     @request.params.merge!(route_info)
   end
 
-  def not_found(msg = "Not Found")
-    [404, {"Content-Type" => "text/plain"}, [msg]]
+  def not_found(msg = 'Not Found')
+    [404, { 'Content-Type' => 'text/plain' }, [msg]]
   end
 
-  #route info returns a hash with the "routing coordinates"
-  #First element = resource
-  #Second element = action to do (can be show, new, index or create depending of the http method
-  #and the id
-  #Third id if it exists
+  # route info returns a hash with the "routing coordinates"
+  # First element = resource
+  # Second element = action to do (can be show, new, index or create depending of the http method
+  # and the id
+  # Third id if it exists
   def route_info
     @route_info ||= begin
-                      resource = path_fragments[0] || "base"
-                      id, action = find_id_and_action(path_fragments[1])
-                      { resource: resource, action: action, id: id}
-                    end
+      resource = path_fragments[0] || 'base'
+      id, action = find_id_and_action(path_fragments[1])
+      { resource: resource, action: action, id: id }
+    end
   end
-
 
   def find_id_and_action(fragment)
     case fragment
-    when "new"
+    when 'new'
       [nil, :new]
     when nil
       action = @request.get? ? :index : :create
@@ -55,14 +54,14 @@ class Router
   end
 
   def path_fragments
-    @fragments ||= @request.path.split("/").reject { |s| s.empty? }
+    @fragments ||= @request.path.split('/').reject { |s| s.empty? }
   end
 
   def controller_name
     "#{route_info[:resource].capitalize}Controller"
   end
 
-  #Returns the class of the controllers name
+  # Returns the class of the controllers name
   def controller_class
     Object.const_get(controller_name)
   rescue NameError
