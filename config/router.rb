@@ -46,7 +46,6 @@ class Router
     case fragment
     when "new"
       [nil, :new]
-
     when nil
       action = @request.get? ? :index : :create
       [nil, action]

@@ -1,3 +1,5 @@
+require 'json'
+
 class Product
   attr_accessor :id, :name
 
@@ -13,7 +15,7 @@ class Product
   def save
     if @id && Product.find(@id)
       index = @@products.find_index{ |p| p.id == @id }
-      @@product[index] = self
+      @@products[index] = self
     else
       @id ||= @@next_id
       @@next_id += 1
@@ -32,9 +34,18 @@ class Product
   def self.create(name:)
     product = Product.new(name: name)
     product.save
+    product
   end
 
   def self.destroy(id)
     @@products.reject! { |p| p.id == id.to_i }
+  end
+
+  def to_h
+    {id: id, name: name} 
+  end
+
+  def to_json
+    to_h.to_json
   end
 end
