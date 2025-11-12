@@ -1,0 +1,110 @@
+openapi: 3.0.3
+info:
+  title: Fudo Challenge API
+  version: 1.0.0
+  description: Simple Rack-based API with authentication and async product creation
+
+paths:
+  /auth:
+    post:
+      summary: Authenticate user
+      description: Receives a username and password, returns a token if valid.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+
+  /products:
+    get:
+      summary: List products
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns all products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '401':
+          description: Unauthorized
+
+    post:
+      summary: Create a product asynchronously
+      description: The product will be created 5 seconds after request.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '202':
+          description: Product creation scheduled
+        '401':
+          description: Unauthorized
+
+  /products/{id}:
+    get:
+      summary: Get a product by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+        '401':
+          description: Unauthorized
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: token

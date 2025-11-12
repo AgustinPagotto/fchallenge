@@ -4,6 +4,8 @@ class Router
   end
 
   def route!
+    return serve_openapi if @request.path == '/openapi.yaml'
+    return serve_authors if @request.path == '/AUTHORS'
     if klass = controller_class
       add_route_info_to_request_params!
 
@@ -19,6 +21,32 @@ class Router
   end
 
   private
+
+  def serve_openapi
+    [
+      200,
+      {
+        'Content-Type' => 'application/yaml',
+        'Cache-Control' => 'no-store'
+      },
+      [File.read('openapi.yaml')]
+    ]
+  rescue Errno::ENOENT
+    not_found('openapi.yaml not found')
+  end
+
+  def serve_authors
+    [
+      200,
+      {
+        'Content-Type' => 'text/plain',
+        'Cache-Control' => 'max-age=86400'
+      },
+      [File.read('AUTHORS')]
+    ]
+  rescue Errno::ENOENT
+    not_found('AUTHORS not found')
+  end
 
   def add_route_info_to_request_params!
     @request.params.merge!(route_info)
