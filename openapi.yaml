@@ -32,6 +32,8 @@ paths:
                     type: string
         '401':
           description: Invalid credentials
+        '400':
+          description: Invalid json
 
   /products:
     get:
@@ -46,7 +48,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Product'
+                  $ref: '#/components/Product'
         '401':
           description: Unauthorized
 
@@ -67,29 +69,6 @@ paths:
       responses:
         '202':
           description: Product creation scheduled
-        '401':
-          description: Unauthorized
-
-  /products/{id}:
-    get:
-      summary: Get a product by ID
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Product found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '404':
-          description: Product not found
         '401':
           description: Unauthorized
 

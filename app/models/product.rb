@@ -9,7 +9,6 @@ class Product
   def initialize(name:,  id: nil)
     @id = id || @@next_id
     @name = name
-    @@next_id = @id + 1 unless @id < @@next_id
   end
 
   def save
@@ -32,7 +31,6 @@ class Product
   end
 
   def self.create(name)
-    puts name
     product = Product.new(name: name)
     product.save
     product
