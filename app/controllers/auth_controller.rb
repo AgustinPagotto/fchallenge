@@ -13,8 +13,9 @@ class AuthController < BaseController
     data = JSON.parse(body)
     username = data["username"]
     password = data["password"]
-    puts data
-    
+    if username.nil? || username.strip.empty? || password.nil? || password.strip.empty?
+      return build_response({error: "Username and Password are requires"}, 400)
+    end
     if ENV["USERNAME"] == username && ENV["PASSWORD"] == password
       token = SecureRandom.hex(32)
       @@tokens << token
