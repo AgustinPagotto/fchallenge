@@ -21,11 +21,18 @@ class ProductsController < BaseController
   def create
     body = request.body.read
     data = JSON.parse(body)
+    name = data["name"]
+    if name.nil? || name.strip.empty?
+      return build_response({error: "name is required"}, 400)
+    end
+    if name.match(/\d/)
+      return build_response({error: "name can't contain numbers"}, 400)
+    end
     Thread.new do
       sleep 5
       Product.create(data["name"])
     end
-    build_response("the product will be created after 5 seconds", 201)
+    build_response({message: "the product will be created after 5 seconds"}, 201)
   end
 
   # GET /product/new

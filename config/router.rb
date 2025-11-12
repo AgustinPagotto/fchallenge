@@ -4,8 +4,10 @@ class Router
   end
 
   def route!
+    #Static files before route to controllers
     return serve_openapi if @request.path == '/openapi.yaml'
     return serve_authors if @request.path == '/AUTHORS'
+
     if klass = controller_class
       add_route_info_to_request_params!
 
@@ -32,7 +34,7 @@ class Router
       [File.read('openapi.yaml')]
     ]
   rescue Errno::ENOENT
-    not_found('openapi.yaml not found')
+    not_found
   end
 
   def serve_authors
@@ -45,7 +47,7 @@ class Router
       [File.read('AUTHORS')]
     ]
   rescue Errno::ENOENT
-    not_found('AUTHORS not found')
+    not_found
   end
 
   def add_route_info_to_request_params!
