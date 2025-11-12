@@ -21,8 +21,11 @@ class ProductsController < BaseController
   def create
     body = request.body.read
     data = JSON.parse(body)
-    product = Product.create(data["name"])
-    build_response(product.to_h, 201)
+    Thread.new do
+      sleep 5
+      Product.create(data["name"])
+    end
+    build_response("the product will be created after 5 seconds", 201)
   end
 
   # GET /product/new
