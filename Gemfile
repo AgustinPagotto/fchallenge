@@ -5,7 +5,7 @@ gem "rack", "~> 3.2"
 gem "puma", "~> 7.1"
 
 group :development, :test do
-  gem "pry"
+  gem "pry-byebug"
   gem "dotenv", "~> 3.1"
 end
 

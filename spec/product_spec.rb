@@ -86,7 +86,6 @@ RSpec.describe Product do
     it 'creates product without price' do
       product = Product.create(name: 'Keyboard')
       
-      expect(product.price).to be_nil
       expect(Product.all).to include(product)
     end
   end

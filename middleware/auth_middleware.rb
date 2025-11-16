@@ -1,4 +1,5 @@
 require_relative '../app/controllers/auth_controller'
+
 class AuthChecker
   def initialize(app)
     @app = app 
