@@ -71,6 +71,17 @@ RSpec.describe "API TEST" do
     expect(last_response.status).to eq 401
   end
 
+  it "returns 400 when post to /products with empty name" do
+    token = auth_token
+    post "/products", 
+         JSON.generate('name'=> ''),
+         { "CONTENT_TYPE" => "application/json",
+           "HTTP_AUTHORIZATION" => "Bearer #{token}",
+         }
+
+    expect(last_response.status).to eq 400
+  end
+
   it "returns 200 with a product when correctly added to the memory and waiting more than 5 seconds" do
     token = auth_token
     add_product(token)

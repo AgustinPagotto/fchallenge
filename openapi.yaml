@@ -7,8 +7,7 @@ info:
 paths:
   /auth:
     post:
-      summary: Authenticate user
-      description: Receives a username and password, returns a token if valid.
+      description: Given a valid username and password it authenticates the user and returns a token
       requestBody:
         required: true
         content:
@@ -37,7 +36,7 @@ paths:
 
   /products:
     get:
-      summary: List products
+      description: List products that are in memory
       security:
         - bearerAuth: []
       responses:
@@ -53,8 +52,7 @@ paths:
           description: Unauthorized
 
     post:
-      summary: Create a product asynchronously
-      description: The product will be created 5 seconds after request.
+      description: Create a product asynchronously
       security:
         - bearerAuth: []
       requestBody:

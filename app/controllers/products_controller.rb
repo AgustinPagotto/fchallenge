@@ -19,6 +19,7 @@ class ProductsController < BaseController
 
   # POST /products
   def create
+    async_time = ENV["ASYNC_TIME"].to_i
     body = request.body.read
     data = JSON.parse(body)
     name = data["name"]
@@ -29,7 +30,7 @@ class ProductsController < BaseController
       return build_response({error: "name can't contain numbers"}, 400)
     end
     Thread.new do
-      sleep 5
+      sleep async_time 
       Product.create(data["name"])
     end
     build_response({message: "the product will be created after 5 seconds"}, 201)
