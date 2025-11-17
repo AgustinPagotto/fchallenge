@@ -2,7 +2,7 @@ require_relative '../app/controllers/auth_controller'
 
 class AuthChecker
   def initialize(app)
-    @app = app 
+    @app = app
   end
 
   def call(env)
@@ -10,14 +10,15 @@ class AuthChecker
     if path == "/auth" || path == "/openapi.yaml" || path == "/AUTHORS"
       return @app.call(env)
     end
+
     auth_header = env["HTTP_AUTHORIZATION"]
     if valid_token?(auth_header)
       @app.call(env)
     else
       [
         401,
-        { "Content-Type" => "application/json"},
-        [{ error: "Unauthorized"}.to_json]
+        { "Content-Type" => "application/json" },
+        [{ error: "Unauthorized" }.to_json]
       ]
     end
   end
@@ -31,5 +32,4 @@ class AuthChecker
     token = auth_header.split(" ").last
     AuthController.valid_token?(token)
   end
-    
 end

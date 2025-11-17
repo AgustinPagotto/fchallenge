@@ -14,4 +14,4 @@ group :test do
   gem "rack-test"
 end
 
-
+gem "rubocop", "~> 1.81", :group => :development

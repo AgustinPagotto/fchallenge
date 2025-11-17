@@ -6,14 +6,14 @@ class Product
   @@products = []
   @@next_id = 1
 
-  def initialize(name:,  id: nil)
+  def initialize(name:, id: nil)
     @id = id || @@next_id
     @name = name
   end
 
   def save
     if @id && Product.find(@id)
-      index = @@products.find_index{ |p| p.id == @id }
+      index = @@products.find_index { |p| p.id == @id }
       @@products[index] = self
     else
       @id ||= @@next_id
@@ -41,7 +41,7 @@ class Product
   end
 
   def to_h
-    {id: id, name: name} 
+    { id: id, name: name }
   end
 
   def to_json

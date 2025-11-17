@@ -4,7 +4,7 @@ class Router
   end
 
   def route!
-    #Static files before route to controllers
+    # Static files before route to controllers
     return serve_openapi if @request.path == '/openapi.yaml'
     return serve_authors if @request.path == '/AUTHORS'
 

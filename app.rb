@@ -1,5 +1,5 @@
-app_files = File.expand_path('../app/**/*.rb', __FILE__)
-Dir.glob(app_files).each {|file| require(file)}
+app_files = File.expand_path('app/**/*.rb', __dir__)
+Dir.glob(app_files).each { |file| require(file) }
 require_relative 'config/router'
 
 class App
