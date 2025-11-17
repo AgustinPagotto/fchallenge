@@ -129,6 +129,6 @@ bundle exec rspec
 Build and run the container:
 ```bash
 docker build -t fchallenge .
-docker run fchallenge
+docker run --env-file .env fchallenge
 ```
 Then you make requests to http://localhost:9292

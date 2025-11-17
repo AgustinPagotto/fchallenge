@@ -2,6 +2,8 @@ require 'rack'
 require 'json'
 require 'rack/test'
 require 'spec_helper'
+require "zlib"
+require "stringio"
 
 OUTER_APP = Rack::Builder.parse_file("config.ru")
 
@@ -113,5 +115,26 @@ RSpec.describe "API TEST" do
          }
 
     expect(last_response.status).to eq 201
+  end
+
+  it "returns 200 with a product compressed in gzip when accept encoding header is added" do
+    token = auth_token
+    add_product(token)
+    sleep 5.5
+
+    header "Accept-Encoding", "gzip"
+    get "/products", {}, { "HTTP_AUTHORIZATION" => "Bearer #{token}"}
+
+    expect(last_response.headers["Content-Encoding"]).to eq("gzip")
+
+
+    expect(last_response.body.encoding).to eq(Encoding::ASCII_8BIT)
+
+    gz = Zlib::GzipReader.new(StringIO.new(last_response.body))
+    decompressed = gz.read
+    gz.close
+
+    json = JSON.parse(decompressed)
+    expect(json[0]["name"]).to eq("laptop")
   end
 end
